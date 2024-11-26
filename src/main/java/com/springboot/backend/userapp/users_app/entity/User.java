@@ -11,6 +11,8 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(name = "last_name")
     private String lastname;
 
     private String email;
