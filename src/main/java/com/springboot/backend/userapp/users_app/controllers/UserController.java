@@ -5,6 +5,7 @@ import com.springboot.backend.userapp.users_app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class UserController {
     }
 
     @PostMapping
+    @Transactional
     public  ResponseEntity<User> create(@RequestBody User user){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(user));
     }
