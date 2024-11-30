@@ -37,6 +37,7 @@ public class UserController {
     @PostMapping
     @Transactional
     public  ResponseEntity<User> create(@RequestBody User user){
+        user.setId(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(user));
     }
 
