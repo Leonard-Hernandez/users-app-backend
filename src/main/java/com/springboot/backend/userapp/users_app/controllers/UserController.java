@@ -4,6 +4,9 @@ import com.springboot.backend.userapp.users_app.entity.User;
 import com.springboot.backend.userapp.users_app.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,12 @@ public class UserController {
     @GetMapping()
     public List<User> list(){
         return this.userService.findAll();
+    }
+
+    @GetMapping("page/{page}")
+    public Page<User> listPageable(@PathVariable Integer page){
+        Pageable pageReques = PageRequest.of(page, 2);
+        return this.userService.findAllPage(pageReques);
     }
 
     @GetMapping("/{id}")
