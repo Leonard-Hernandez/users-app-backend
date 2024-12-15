@@ -2,6 +2,7 @@ package com.springboot.backend.userapp.users_app.services;
 
 import com.springboot.backend.userapp.users_app.entity.User;
 import com.springboot.backend.userapp.users_app.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private UserRepository repository;
-
 
     @Override
     @Transactional(readOnly = true)
