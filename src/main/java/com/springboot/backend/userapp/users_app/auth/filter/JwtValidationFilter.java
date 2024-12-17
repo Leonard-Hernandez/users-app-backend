@@ -42,7 +42,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         String token = header.replace(TOKEN_PREFIX, "");
 
         try{
-            Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseEncryptedClaims(token).getPayload();
+            Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String username = claims.getSubject();
             Object authoritiesClaims = claims.get("authorities");
             Collection<? extends GrantedAuthority> roles = Arrays.asList(new ObjectMapper()
@@ -59,7 +59,6 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             Map<String, String> body = new HashMap<>();
             body.put("message", "Credenciales invalidas");
             body.put("error", e.getMessage());
-            body.put("trace", e.getStackTrace().toString());
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(body));
             response.setContentType(CONTENT_TYPE);
