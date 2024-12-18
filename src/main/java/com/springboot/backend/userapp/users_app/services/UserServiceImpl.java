@@ -5,7 +5,9 @@ import com.springboot.backend.userapp.users_app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -39,7 +44,25 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public Optional<User> update(User user, Long id) {
+        Optional<User> userOptional = this.userRepository.findById(id);
+        if (userOptional.isPresent()){
+            User dbUser = userOptional.get();
+            dbUser.setEmail(user.getEmail());
+            dbUser.setName(user.getName());
+            dbUser.setLastname(user.getLastname());
+            dbUser.setUsername(user.getUsername());
+
+            return Optional.of(this.userRepository.save(dbUser));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -47,4 +70,6 @@ public class UserServiceImpl implements UserService{
     public void deleteById(Long id) {
         this.userRepository.deleteById(id);
     }
+
+
 }

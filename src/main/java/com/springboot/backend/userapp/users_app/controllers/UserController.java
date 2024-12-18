@@ -59,22 +59,15 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id){
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return validation(result);
         }
-        Optional<User> userOptional = this.userService.findById(id);
-        if (userOptional.isPresent()){
-            User dbUser = userOptional.get();
-            dbUser.setEmail(user.getEmail());
-            dbUser.setName(user.getName());
-            dbUser.setLastname(user.getLastname());
-            dbUser.setPassword(user.getPassword());
-            dbUser.setUsername(user.getUsername());
+        Optional<User> userOptional = this.userService.update(user, id);
 
-            return ResponseEntity.ok(this.userService.save(dbUser));
-        } else {
-            return ResponseEntity.notFound().build();
+        if (userOptional.isPresent()){
+            return ResponseEntity.ok(userOptional.get());
         }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
