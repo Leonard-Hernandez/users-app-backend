@@ -1,7 +1,9 @@
 package com.springboot.backend.userapp.users_app.services;
 
+import com.springboot.backend.userapp.users_app.entities.Role;
 import com.springboot.backend.userapp.users_app.entities.User;
 import com.springboot.backend.userapp.users_app.models.UserRequest;
+import com.springboot.backend.userapp.users_app.repositories.RoleRepository;
 import com.springboot.backend.userapp.users_app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,6 +51,13 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public User save(User user) {
+
+        List<Role> roles = new ArrayList<>();
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
+
+        optionalRoleUser.ifPresent(roles::add);
+
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }
