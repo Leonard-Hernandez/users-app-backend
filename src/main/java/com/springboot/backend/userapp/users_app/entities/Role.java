@@ -1,4 +1,4 @@
-package com.springboot.backend.userapp.users_app.entity;
+package com.springboot.backend.userapp.users_app.entities;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.springboot.backend.userapp.users_app.services;
 
-import com.springboot.backend.userapp.users_app.entity.User;
+import com.springboot.backend.userapp.users_app.entities.User;
 import com.springboot.backend.userapp.users_app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

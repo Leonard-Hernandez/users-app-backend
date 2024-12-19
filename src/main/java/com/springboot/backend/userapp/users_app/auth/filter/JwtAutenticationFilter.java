@@ -1,7 +1,7 @@
 package com.springboot.backend.userapp.users_app.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.backend.userapp.users_app.entity.User;
+import com.springboot.backend.userapp.users_app.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -16,7 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import static com.springboot.backend.userapp.users_app.auth.TokenJwtConfig.*;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
