@@ -2,6 +2,7 @@ package com.springboot.backend.userapp.users_app.services;
 
 import com.springboot.backend.userapp.users_app.entities.Role;
 import com.springboot.backend.userapp.users_app.entities.User;
+import com.springboot.backend.userapp.users_app.models.IUser;
 import com.springboot.backend.userapp.users_app.models.UserRequest;
 import com.springboot.backend.userapp.users_app.repositories.RoleRepository;
 import com.springboot.backend.userapp.users_app.repositories.UserRepository;
@@ -13,13 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -52,26 +52,24 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public User save(User user) {
 
-        List<Role> roles = new ArrayList<>();
-        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
-
-        optionalRoleUser.ifPresent(roles::add);
-
-        user.setRoles(roles);
+        user.setRoles(getRoles(user));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
+
     }
 
     @Override
     @Transactional
     public Optional<User> update(UserRequest user, Long id) {
         Optional<User> userOptional = this.userRepository.findById(id);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User dbUser = userOptional.get();
             dbUser.setEmail(user.getEmail());
             dbUser.setName(user.getName());
             dbUser.setLastname(user.getLastname());
             dbUser.setUsername(user.getUsername());
+
+            dbUser.setRoles(getRoles(user));
 
             return Optional.of(this.userRepository.save(dbUser));
         } else {
@@ -85,5 +83,18 @@ public class UserServiceImpl implements UserService{
         this.userRepository.deleteById(id);
     }
 
+    private List<Role> getRoles(IUser user) {
+        List<Role> roles = new ArrayList<>();
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
+        optionalRoleUser.ifPresent(roles::add);
+
+        if (user.isAdmin()) {
+
+            Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+            optionalRoleAdmin.ifPresent(roles::add);
+
+        }
+        return roles;
+    }
 
 }

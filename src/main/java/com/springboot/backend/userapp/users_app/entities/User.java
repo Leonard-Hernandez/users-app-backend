@@ -1,6 +1,9 @@
 package com.springboot.backend.userapp.users_app.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.springboot.backend.userapp.users_app.models.IUser;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements IUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +31,9 @@ public class User {
     @NotBlank
     @Size(min = 6, max = 12)
     private String username;
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean admin;
     @NotBlank
     private String password;
 
@@ -100,4 +106,13 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
 }

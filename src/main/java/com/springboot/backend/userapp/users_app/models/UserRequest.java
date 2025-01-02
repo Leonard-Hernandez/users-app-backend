@@ -1,13 +1,11 @@
 package com.springboot.backend.userapp.users_app.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class UserRequest {
+public class UserRequest implements IUser {
 
     @NotBlank
     private String name;
@@ -19,6 +17,7 @@ public class UserRequest {
     @NotBlank
     @Size(min = 6, max = 12)
     private String username;
+    private boolean admin;
 
     public @NotBlank String getName() {
         return name;
@@ -51,4 +50,13 @@ public class UserRequest {
     public void setUsername(@NotBlank @Size(min = 6, max = 12) String username) {
         this.username = username;
     }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
 }
