@@ -79,8 +79,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
         this.userRepository.deleteById(id);
+        return id;
     }
 
     private List<Role> getRoles(IUser user) {
