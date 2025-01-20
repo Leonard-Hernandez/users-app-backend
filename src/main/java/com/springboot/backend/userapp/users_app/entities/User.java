@@ -32,7 +32,6 @@ public class User implements IUser{
     @Size(min = 6, max = 12)
     private String username;
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
     @NotBlank
     private String password;
